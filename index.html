@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Theory Notebook</title>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --notebook-bg: #f5f5f5;
+            --line-color: #a0a0a0;
+            --accent-color: #3498db;
+            --text-color: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Architects Daughter', cursive;
+            background-color: var(--notebook-bg);
+            background-image: 
+                linear-gradient(90deg, transparent 79px, var(--line-color) 79px, transparent 80px),
+                linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 80px 80px;
+            line-height: 1.6;
+            color: var(--text-color);
+            padding: 20px;
+        }
+
+        .notebook-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-left: 30px solid #f0f0f0;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        .notebook-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 20px;
+        }
+
+        .notebook-header h1 {
+            font-size: 3rem;
+            color: var(--accent-color);
+            font-family: 'Caveat', cursive;
+        }
+
+        .notebook-header p {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        .theory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .theory-card {
+            background: white;
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .theory-card::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(52, 152, 219, 0.05) 10px,
+                rgba(52, 152, 219, 0.05) 20px
+            );
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .theory-card:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .theory-card h2 {
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+        }
+
+        .theory-card p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: 'Architects Daughter', cursive;
+            transition: background 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: darken(var(--accent-color), 10%);
+        }
+
+        .doodle {
+            position: absolute;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        @media (max-width: 768px) {
+            .notebook-container {
+                padding: 20px;
+                border-left: 15px solid #f0f0f0;
+            }
+
+            .theory-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notebook-container">
+        <header class="notebook-header">
+            <h1>Game Theory Notebook</h1>
+            <p>Exploring Strategic Interactions Through Mathematical Lenses</p>
+        </header>
+
+        <main class="theory-grid">
+            <div class="theory-card">
+                <h2>Prisoner's Dilemma</h2>
+                <p>A fundamental scenario illustrating the conflict between individual and collective rationality in strategic decision-making.</p>
+                <a href="prisoner.html" class="cta-button">Explore Strategy</a>
+            </div>
+
+            <div class="theory-card">
+                <h2>Nash Equilibrium</h2>
+                <p>Discover how strategic interactions reach a stable state where no participant can unilaterally improve their outcome.</p>
+                <a href="Nash.html" class="cta-button">Analyze Equilibrium</a>
+            </div>
+
+            <div class="theory-card">
+                <h2>Evolutionary Game Theory</h2>
+                <p>Examine how strategies adapt and evolve in complex, dynamic environments over time.</p>
+                <a href="Evolution.html" class="cta-button">View Dynamics</a>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Add some playful doodle-like interactions
+        function createDoodle() {
+            const doodle = document.createElement('div');
+            doodle.classList.add('doodle');
+            doodle.style.position = 'absolute';
+            doodle.style.width = `${Math.random() * 100 + 50}px`;
+            doodle.style.height = `${Math.random() * 100 + 50}px`;
+            doodle.style.background = 'url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48cGF0aCBkPSJNMTAwLDUwIEMxNTAsMTAwIDEwMCwxNTAgNTAsMTAwIiBzdHJva2U9IiMzNDk4REIiIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==")';
+            
+            doodle.style.left = `${Math.random() * window.innerWidth}px`;
+            doodle.style.top = `${Math.random() * window.innerHeight}px`;
+            
+            document.body.appendChild(doodle);
+        }
+
+        // Create multiple doodles
+        for (let i = 0; i < 5; i++) {
+            createDoodle();
+        }
+    </script>
+</body>
+</html>

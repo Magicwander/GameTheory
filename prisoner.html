@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Prisoner's Dilemma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --notebook-bg: #f5f5f5;
+            --line-color: #a0a0a0;
+            --accent-color: #3498db;
+            --text-color: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Architects Daughter', cursive;
+            background-color: var(--notebook-bg);
+            background-image: 
+                linear-gradient(90deg, transparent 79px, var(--line-color) 79px, transparent 80px),
+                linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 80px 80px;
+            line-height: 1.6;
+            color: var(--text-color);
+            padding: 20px;
+        }
+
+        .notebook-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-left: 30px solid #f0f0f0;
+            min-height: 100vh;
+            padding: 40px;
+            position: relative;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .prisoners-section {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .prisoner {
+            width: 40%;
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .decision-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .decision-btn {
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .decision-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .decision-btn.selected {
+            background-color: #2ecc71;
+        }
+
+        .result-section {
+            margin-top: 30px;
+            text-align: center;
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .sentence-display {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .sentence-card {
+            background-color: white;
+            border: 1px solid var(--accent-color);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .explanation {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .reset-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .strategy-info {
+            margin-top: 20px;
+            background-color: rgba(241, 196, 15, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .prisoners-section {
+                flex-direction: column;
+            }
+            .prisoner {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notebook-container">
+        <div class="game-container">
+            <h1 style="text-align: center; color: var(--accent-color); margin-bottom: 30px;">
+                Interactive Prisoner's Dilemma
+            </h1>
+
+            <div class="prisoners-section">
+                <div class="prisoner" id="prisonerA">
+                    <h2>Prisoner A</h2>
+                    <div class="decision-buttons">
+                        <button class="decision-btn" data-decision="cooperate">Stay Silent</button>
+                        <button class="decision-btn" data-decision="betray">Betray</button>
+                    </div>
+                </div>
+
+                <div class="prisoner" id="prisonerB">
+                    <h2>Prisoner B</h2>
+                    <div class="decision-buttons">
+                        <button class="decision-btn" data-decision="cooperate">Stay Silent</button>
+                        <button class="decision-btn" data-decision="betray">Betray</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <h3>Outcome</h3>
+                <div class="sentence-display">
+                    <div class="sentence-card" id="sentenceA">Prisoner A: Waiting...</div>
+                    <div class="sentence-card" id="sentenceB">Prisoner B: Waiting...</div>
+                </div>
+                <div class="explanation" id="outcomeExplanation">
+                    Make your choices to see the consequences!
+                </div>
+            </div>
+
+            <button class="reset-btn">Reset Game</button>
+
+            <div class="strategy-info">
+                <h3>Strategy Insights</h3>
+                <p id="strategyText">
+                    Hover over or select decisions to explore different outcomes.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PrisonersDilemma {
+            constructor() {
+                this.prisonerA = null;
+                this.prisonerB = null;
+                this.initializeEventListeners();
+            }
+
+            initializeEventListeners() {
+                const decisionButtons = document.querySelectorAll('.decision-btn');
+                const resetBtn = document.querySelector('.reset-btn');
+
+                decisionButtons.forEach(btn => {
+                    btn.addEventListener('click', this.handleDecision.bind(this));
+                });
+
+                resetBtn.addEventListener('click', this.resetGame.bind(this));
+            }
+
+            handleDecision(event) {
+                const prisoner = event.target.closest('.prisoner');
+                const decision = event.target.dataset.decision;
+
+                // Remove previous selections
+                prisoner.querySelectorAll('.decision-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+
+                // Select current button
+                event.target.classList.add('selected');
+
+                // Store decision
+                if (prisoner.id === 'prisonerA') {
+                    this.prisonerA = decision;
+                } else {
+                    this.prisonerB = decision;
+                }
+
+                // Check if both prisoners have made a decision
+                if (this.prisonerA && this.prisonerB) {
+                    this.calculateOutcome();
+                }
+            }
+
+            calculateOutcome() {
+                let sentenceA, sentenceB, explanation;
+
+                if (this.prisonerA === 'cooperate' && this.prisonerB === 'cooperate') {
+                    sentenceA = sentenceB = '1 Year';
+                    explanation = 'Both stayed silent. Minimal sentence for both.';
+                } else if (this.prisonerA === 'betray' && this.prisonerB === 'cooperate') {
+                    sentenceA = '0 Years';
+                    sentenceB = '3 Years';
+                    explanation = 'A betrayed B. A goes free, B gets maximum sentence.';
+                } else if (this.prisonerA === 'cooperate' && this.prisonerB === 'betray') {
+                    sentenceA = '3 Years';
+                    sentenceB = '0 Years';
+                    explanation = 'B betrayed A. B goes free, A gets maximum sentence.';
+                } else {
+                    sentenceA = sentenceB = '2 Years';
+                    explanation = 'Both betrayed each other. Moderate sentence for both.';
+                }
+
+                // Update UI
+                document.getElementById('sentenceA').textContent = `Prisoner A: ${sentenceA}`;
+                document.getElementById('sentenceB').textContent = `Prisoner B: ${sentenceB}`;
+                document.getElementById('outcomeExplanation').textContent = explanation;
+
+                // Update strategy insights
+                this.updateStrategyInsights();
+            }
+
+            updateStrategyInsights() {
+                const strategyText = document.getElementById('strategyText');
+                const insights = [
+                    "The dilemma shows how individual self-interest can lead to a worse collective outcome.",
+                    "Betraying seems tempting, but mutual cooperation yields the best overall result.",
+                    "Each prisoner's best strategy depends on what they think the other will do."
+                ];
+
+                strategyText.textContent = insights[Math.floor(Math.random() * insights.length)];
+            }
+
+            resetGame() {
+                // Reset decisions
+                this.prisonerA = null;
+                this.prisonerB = null;
+
+                // Reset UI
+                document.querySelectorAll('.decision-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+
+                document.getElementById('sentenceA').textContent = 'Prisoner A: Waiting...';
+                document.getElementById('sentenceB').textContent = 'Prisoner B: Waiting...';
+                document.getElementById('outcomeExplanation').textContent = 'Make your choices to see the consequences!';
+                document.getElementById('strategyText').textContent = 'Hover over or select decisions to explore different outcomes.';
+            }
+        }
+
+        // Initialize the game
+        new PrisonersDilemma();
+    </script>
+</body>
+</html>

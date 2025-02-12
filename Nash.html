@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nash Equilibrium Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --notebook-bg: #f5f5f5;
+            --line-color: #a0a0a0;
+            --accent-color: #2c3e50;
+            --text-color: #34495e;
+            --highlight-color: #3498db;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Architects Daughter', cursive;
+            background-color: var(--notebook-bg);
+            background-image:
+                linear-gradient(90deg, transparent 79px, var(--line-color) 79px, transparent 80px),
+                linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 80px 80px;
+            line-height: 1.6;
+            color: var(--text-color);
+            padding: 20px;
+        }
+
+        .notebook-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-left: 30px solid #f0f0f0;
+            min-height: 100vh;
+            padding: 40px;
+            position: relative;
+        }
+
+        .nash-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-matrix {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .strategy-card {
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .strategy-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .strategy-selection {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .strategy-btn {
+            padding: 8px 15px;
+            background-color: var(--highlight-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .strategy-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .strategy-btn.selected {
+            background-color: #2ecc71;
+        }
+
+        .result-section {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .payoff-matrix {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .payoff-card {
+            background-color: white;
+            border: 1px solid var(--highlight-color);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .explanation {
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+
+        .reset-btn, .learn-more-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: var(--highlight-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .reset-btn {
+            background-color: #e74c3c;
+        }
+
+        .reset-btn:hover, .learn-more-btn:hover {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .game-matrix {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notebook-container">
+        <div class="nash-container">
+            <h1 style="text-align: center; color: var(--accent-color); margin-bottom: 30px;">
+                Nash Equilibrium Explorer
+            </h1>
+
+            <div class="game-matrix">
+                <div class="strategy-card" id="playerA">
+                    <h2>Player A</h2>
+                    <div class="strategy-selection">
+                        <button class="strategy-btn" data-strategy="safe">Safe Strategy</button>
+                        <button class="strategy-btn" data-strategy="risky">Risky Strategy</button>
+                    </div>
+                </div>
+
+                <div class="strategy-card" id="playerB">
+                    <h2>Player B</h2>
+                    <div class="strategy-selection">
+                        <button class="strategy-btn" data-strategy="safe">Safe Strategy</button>
+                        <button class="strategy-btn" data-strategy="risky">Risky Strategy</button>
+                    </div>
+                </div>
+
+                <div class="strategy-card strategy-info">
+                    <h3>Nash Equilibrium</h3>
+                    <p>A state where no player can improve their outcome by changing only their own strategy.</p>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <h3>Game Outcome</h3>
+                <div class="payoff-matrix">
+                    <div class="payoff-card" id="payoffA">Player A Payoff: Waiting...</div>
+                    <div class="payoff-card" id="payoffB">Player B Payoff: Waiting...</div>
+                </div>
+                <div class="explanation" id="outcomeExplanation">
+                    Select strategies to explore the equilibrium!
+                </div>
+            </div>
+
+            <button class="reset-btn">Reset Game</button>
+            <button class="learn-more-btn">Learn More</button>
+        </div>
+    </div>
+
+    <script>
+        class NashEquilibriumGame {
+            constructor() {
+                this.playerAStrategy = null;
+                this.playerBStrategy = null;
+                this.initializeEventListeners();
+            }
+
+            initializeEventListeners() {
+                const strategyButtons = document.querySelectorAll('.strategy-btn');
+                const resetBtn = document.querySelector('.reset-btn');
+                const learnMoreBtn = document.querySelector('.learn-more-btn');
+
+                strategyButtons.forEach(btn => {
+                    btn.addEventListener('click', this.handleStrategySelection.bind(this));
+                });
+
+                resetBtn.addEventListener('click', this.resetGame.bind(this));
+
+                learnMoreBtn.addEventListener('click', function() {
+                    window.location.href = 'Nash-Theory.html';
+                });
+            }
+
+            handleStrategySelection(event) {
+                const player = event.target.closest('.strategy-card');
+                const strategy = event.target.dataset.strategy;
+
+                // Remove previous selections
+                player.querySelectorAll('.strategy-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+
+                // Select current button
+                event.target.classList.add('selected');
+
+                // Store strategy
+                if (player.id === 'playerA') {
+                    this.playerAStrategy = strategy;
+                } else {
+                    this.playerBStrategy = strategy;
+                }
+
+                // Check if both players have selected a strategy
+                if (this.playerAStrategy && this.playerBStrategy) {
+                    this.calculateOutcome();
+                }
+            }
+
+            calculateOutcome() {
+                let payoffA, payoffB, explanation;
+
+                // Simplified Nash Equilibrium scenario
+                if (this.playerAStrategy === 'safe' && this.playerBStrategy === 'safe') {
+                    payoffA = payoffB = 50;
+                    explanation = "Safe strategies lead to a stable, moderate outcome for both players.";
+                } else if (this.playerAStrategy === 'risky' && this.playerBStrategy === 'safe') {
+                    payoffA = 80;
+                    payoffB = 30;
+                    explanation = "Risky strategy by A yields higher payoff when B plays safe.";
+                } else if (this.playerAStrategy === 'safe' && this.playerBStrategy === 'risky') {
+                    payoffA = 30;
+                    payoffB = 80;
+                    explanation = "Risky strategy by B yields higher payoff when A plays safe.";
+                } else {
+                    payoffA = payoffB = 40;
+                    explanation = "Both players taking risky strategies results in a balanced outcome.";
+                }
+
+                // Update UI
+                document.getElementById('payoffA').textContent = `Player A Payoff: ${payoffA}`;
+                document.getElementById('payoffB').textContent = `Player B Payoff: ${payoffB}`;
+                document.getElementById('outcomeExplanation').textContent = explanation;
+            }
+
+            resetGame() {
+                // Reset strategies
+                this.playerAStrategy = null;
+                this.playerBStrategy = null;
+
+                // Reset UI
+                document.querySelectorAll('.strategy-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+
+                document.getElementById('payoffA').textContent = 'Player A Payoff: Waiting...';
+                document.getElementById('payoffB').textContent = 'Player B Payoff: Waiting...';
+                document.getElementById('outcomeExplanation').textContent = 'Select strategies to explore the equilibrium!';
+            }
+        }
+
+        // Initialize the game
+        new NashEquilibriumGame();
+    </script>
+</body>
+</html>

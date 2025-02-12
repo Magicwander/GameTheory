@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Nash Equilibrium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --notebook-bg: #f5f5f5;
+            --line-color: #a0a0a0;
+            --accent-color: #2c3e50;
+            --text-color: #34495e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Architects Daughter', cursive;
+            background-color: var(--notebook-bg);
+            background-image: 
+                linear-gradient(90deg, transparent 79px, var(--line-color) 79px, transparent 80px),
+                linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 80px 80px;
+            line-height: 1.6;
+            color: var(--accent-color);
+            padding: 20px;
+        }
+
+        .notebook-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-left: 30px solid #f0f0f0;
+            min-height: 100vh;
+            padding: 40px;
+            position: relative;
+        }
+
+        .nash-content {
+            text-align: left;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .concept-section {
+            background-color: rgba(44, 62, 80, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .example-box {
+            border: 2px dashed var(--accent-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .key-points {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .key-points li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .key-points li:before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        .diagram {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="notebook-container">
+        <div class="nash-content">
+            <h1>Nash Equilibrium: A Strategic Insight</h1>
+
+            <div class="concept-section">
+                <p>Nash Equilibrium is a fundamental concept in game theory that describes a situation where each participant has chosen a strategy, and no participant can benefit by changing their strategy unilaterally.</p>
+            </div>
+
+            <div class="example-box">
+                <h3>Simple Explanation</h3>
+                <p>Imagine two friends deciding where to meet. If both choose a location that works best for both of them, and neither can improve their situation by changing alone, that's a Nash Equilibrium.</p>
+            </div>
+
+            <h3>Key Characteristics</h3>
+            <ul class="key-points">
+                <li>No player can improve their outcome by changing only their own strategy</li>
+                <li>Each player's strategy is optimal given the strategies of other players</li>
+                <li>Represents a state of strategic stability</li>
+            </ul>
+
+            <div class="example-box">
+                <h3>Real-World Analogy</h3>
+                <p>Think of market competition: If two companies have settled on pricing strategies where neither can gain by changing prices alone, they've reached a Nash Equilibrium.</p>
+            </div>
+
+            <h3>Mathematical Insight</h3>
+            <p>Mathematically, in a game with multiple players, a Nash Equilibrium occurs when each player's strategy is a best response to the strategies of other players.</p>
+
+            <div class="concept-section">
+                <h3>Importance</h3>
+                <p>Nash Equilibrium helps us understand:</p>
+                <ul class="key-points">
+                    <li>Strategic decision-making</li>
+                    <li>Competitive interactions</li>
+                    <li>Optimal choices in complex scenarios</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

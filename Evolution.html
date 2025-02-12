@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolutionary Game Theory: Origins & Insights</title>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --notebook-bg: #f5f5f5;
+            --line-color: #a0a0a0;
+            --accent-color: #2c3e50;
+            --text-color: #34495e;
+            --highlight-color: #3498db;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Architects Daughter', cursive;
+            background-color: var(--notebook-bg);
+            background-image: 
+                linear-gradient(90deg, transparent 79px, var(--line-color) 79px, transparent 80px),
+                linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 80px 80px;
+            line-height: 1.6;
+            color: var(--accent-color);
+            padding: 20px;
+        }
+
+        .notebook-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-left: 30px solid #f0f0f0;
+            min-height: 100vh;
+            padding: 40px;
+            position: relative;
+        }
+
+        .theory-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        .section {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item::before {
+            content: '🕰️';
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 30px;
+        }
+
+        .key-thinkers {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .thinker-card {
+            width: 30%;
+            background-color: rgba(46, 204, 113, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .thinker-card img {
+            max-width: 150px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .learn-more-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: var(--highlight-color);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .learn-more-btn:hover {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .thinker-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notebook-container">
+        <div class="theory-content">
+            <h1>Evolutionary Game Theory: A Journey of Strategic Understanding</h1>
+
+            <div class="section">
+                <h2>What is Evolutionary Game Theory?</h2>
+                <p>
+                    Evolutionary Game Theory is a fascinating approach that applies principles of biological evolution 
+                    to understanding strategic interactions. It explores how strategies emerge, compete, and adapt 
+                    in complex systems, much like natural selection in biological populations.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Historical Origins</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h3>1930s: Early Foundations</h3>
+                        <p>
+                            The roots of Evolutionary Game Theory can be traced back to early work in population genetics 
+                            and mathematical biology, where researchers began to understand how traits spread through populations.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>1970s: Theoretical Breakthrough</h3>
+                        <p>
+                            John Maynard Smith formally introduced the concept of Evolutionary Game Theory, 
+                            applying game-theoretic principles to biological evolution and strategic interactions.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>1980s-Present: Interdisciplinary Expansion</h3>
+                        <p>
+                            The theory expanded beyond biology, finding applications in economics, 
+                            social sciences, computer science, and artificial intelligence.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Key Thinkers Who Shaped the Theory</h2>
+                <div class="key-thinkers">
+                    <div class="thinker-card">
+                        <h3>John Maynard Smith</h3>
+                        <p>Pioneered Evolutionary Game Theory in biology</p>
+                    </div>
+                    <div class="thinker-card">
+                        <h3>Robert Axelrod</h3>
+                        <p>Explored cooperation and strategic interactions</p>
+                    </div>
+                    <div class="thinker-card">
+                        <h3>Thomas Schelling</h3>
+                        <p>Developed insights into strategic behavior</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Core Principles</h2>
+                <ul>
+                    <li>Strategies evolve based on their reproductive success</li>
+                    <li>No single strategy is universally optimal</li>
+                    <li>Adaptation occurs through repeated interactions</li>
+                    <li>Complex behaviors emerge from simple rules</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Inspirational Roots</h2>
+                <p>
+                    The theory was inspired by observing how biological organisms adapt and compete 
+                    in nature. Just as species evolve to survive, strategies in game theory 
+                    develop to maximize their success in competitive environments.
+                </p>
+                <p>
+                    It bridges biology, mathematics, and social sciences, showing how 
+                    strategic thinking is fundamental to survival and success across 
+                    different systems.
+                </p>
+            </div>
+
+          
+    </div>
+
+    <script>
+        // Optional: Add interactivity or modal for "Dive Deeper" button
+        document.querySelector('.learn-more-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('More detailed resources coming soon!');
+        });
+    </script>
+</body>
+</html>
